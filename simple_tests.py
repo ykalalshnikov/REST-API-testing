@@ -1,6 +1,5 @@
 import requests
-import pytest
-import json
+
 
 BASE_URL = "http://ip-api.com"
 
@@ -13,6 +12,7 @@ params = {
    "org":"Z-Telecom network",
    "timezone":"Europe/Moscow"
 }
+
 json_data = response.json()
 
 
@@ -26,19 +26,19 @@ def test_code_status():
 
 
 def test_response_data():
-    assert json_data == params
+    assert json_data == params, 'json data is nit expected'
 
 
 def test_params_type():
-    assert get_param_type(json_data, "lat") == float
-    assert get_param_type(json_data, "city") == str
+    assert get_param_type(json_data, "lat") == float, 'type of lat is not float'
+    assert get_param_type(json_data, "city") == str, 'type of lat is not string'
 
 
 def test_response_time():
-    assert response.elapsed.total_seconds() < 0.1
+    assert response.elapsed.total_seconds() < 0.1, 'response time is lower than 0.1 second'
 
 
 def test_headers():
-    assert response.headers['Content-Type'] == 'application/json; charset=utf-8'
+    assert response.headers['Content-Type'] == 'application/json; charset=utf-8', 'response has another content type'
 
 
