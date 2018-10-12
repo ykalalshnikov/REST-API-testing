@@ -8,10 +8,8 @@ def valid_ip(address):
     parts = address.split(".")
     if len(parts) != 4:
         return False
-    elif '0' in parts:
-        return False
     for item in parts:
-        if not 0 <= int(item) <= 255 or '0' in list(item):
+        if not 1 <= int(item) <= 255 or '0' in list(item):
             return False
     return True
 
