@@ -96,7 +96,7 @@ def test_response_time():
     url = "http://ip-api.com/json"
     response = requests.get(url)
 
-    assert response.elapsed.total_seconds() > 0.1, 'response time is less than 0.1 second'
+    assert response.elapsed.total_seconds() < 0.1, 'response time is less than 0.1 second'
 
 
 def test_headers():
