@@ -9,7 +9,7 @@ def valid_ip(address):
     if len(parts) != 4:
         return False
     for item in parts:
-        if not 1 <= int(item) <= 255 or '0' in list(item):
+        if not (1 <= int(item) <= 255) or ('0' in list(item)):
             return False
     return True
 
