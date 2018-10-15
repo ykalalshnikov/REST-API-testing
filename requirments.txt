@@ -2,3 +2,4 @@ requests
 pytest
 pytest-allure-adaptor
 json
+flask

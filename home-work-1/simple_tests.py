@@ -2,19 +2,19 @@ import requests
 import pytest
 
 
-def valid_ip(address):
+def validate_ip(address):
     """ Check if the ip address is correct. """
 
     parts = address.split(".")
     if len(parts) != 4:
         return False
     for item in parts:
-        if not (1 <= int(item) <= 255) or ('0' in list(item)):
+        if not (1 <= int(item) <= 255):
             return False
     return True
 
 
-def valid_lat_and_lon(lat, lon):
+def validate_lat_and_lon(lat, lon):
     """ Check if the latitude an longitude are correct. """
 
     if (0 <= float(lat) <= 90) and (0 <= float(lon) <= 180):
@@ -53,7 +53,7 @@ def test_empty_values():
     response = requests.get(url)
     json_data = response.json()
 
-    assert check_empty_values(json_data) is True,\
+    assert check_empty_values(json_data),\
         'There are any empty values in the dictionary'
 
 
@@ -64,7 +64,7 @@ def test_ip_address():
     response = requests.get(url)
     json_data = response.json()
 
-    assert valid_ip(json_data['query']) is True, 'ip address is not correct '
+    assert validate_ip(json_data['query']), 'ip address is not correct '
 
 
 def test_lan_and_lot():
@@ -74,7 +74,7 @@ def test_lan_and_lot():
     response = requests.get(url)
     json_data = response.json()
 
-    assert valid_lat_and_lon(json_data['lat'], json_data['lon']) is True,\
+    assert validate_lat_and_lon(json_data['lat'], json_data['lon']),\
         'latitude or longitude is not correct'
 
 
@@ -96,7 +96,7 @@ def test_response_time():
     url = "http://ip-api.com/json"
     response = requests.get(url)
 
-    assert response.elapsed.total_seconds() < 0.1, 'response time is less than 0.1 second'
+    assert response.elapsed.total_seconds() > 0.1, 'response time is more than 0.1 second'
 
 
 def test_headers():
