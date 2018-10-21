@@ -124,7 +124,7 @@ def update_book(book_id):
 
                 return flask.jsonify(book)
         else:
-            raise InvalidUsage('No book with given ID!')
+            raise InvalidUsage('No book with given ID!', status_code=404)
 
     raise InvalidUsage('No valid auth cookie provided!')
 

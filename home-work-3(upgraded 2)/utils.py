@@ -115,8 +115,6 @@ def get_all_books(filters=None):
     url = '{0}/books'.format(host)
     response = get(url, cookies=auth(), body=filters)
 
-    assert response.status_code == 200, 'response code is not 200'
-
     return response.json()
 
 
@@ -126,8 +124,6 @@ def get_book(book_id='1'):
     url = '{0}/books/{1}'.format(host, book_id)
     response = get(url, cookies=auth())
 
-    assert response.status_code == 200, 'response code is not 200'
-
     return response.json()
 
 
@@ -136,8 +132,6 @@ def add_book(book):
 
     url = '{0}/add_book'.format(host)
     response = post(url, cookies=auth(), body=book)
-
-    assert response.status_code == 200, 'response code is not 200'
 
     return response.json()
 
@@ -151,13 +145,11 @@ def add_three_books():
     add_book({'title': 'A', 'author': '#$%$^'})
 
 
-def delete_book(book_id='1'):
+def delete_book(book_id):
     """ This function deletes the book. """
 
     url = '{0}/books/{1}'.format(host, book_id)
     response = delete(url, cookies=auth())
-
-    assert response.status_code == 200, 'response code is not 200'
 
     return response.json()
 
@@ -167,8 +159,6 @@ def update_book(book_id, book):
 
     url = '{0}/books/{1}'.format(host, book_id)
     response = put(url, cookies=auth(), body=book)
-
-    assert response.status_code == 200 or 400, 'response code is not 200 or 400'
 
     return response.json()
 
