@@ -62,8 +62,10 @@ def get_list_of_books(auth_cookie, sort=None, limit=None):
         filter_book = dict(limit=limit)
     else:
         filter_book = dict(sort=sort)
+    print(filter_book)
     url = 'http://0.0.0.0:7000/books'
     result = requests.get(url, params=filter_book, cookies={'my_cookie': auth_cookie})
+    print(result.url)
     assert result.status_code == 200, 'status code is not 200'
     data = result.json()
     return data
@@ -85,6 +87,7 @@ def test_login():
     result = requests.get(url,
                           auth=HTTPBasicAuth(user, password))
     data = result.json()
+    print(data)
 
     # Verify that server returns some auth cookie:
     assert result.status_code == 200, 'status code is not 200'
@@ -99,6 +102,7 @@ def test_wrong_user():
     # Send GET REST API request with basic auth:
     result = requests.get(url,
                           auth=HTTPBasicAuth(wrong_user, password))
+    print(result)
     assert result.status_code == 401, 'status code is not 401'
 
 
@@ -265,6 +269,7 @@ def test_add_book_with_empty_author(auth_cookie):
     new_book = add_book(auth_cookie, title='Pushkin')
     new_book['author'] = 'No Name'
     all_books = get_list_of_books(auth_cookie)
+    print(all_books)
     assert new_book in all_books, 'author of added book no No Name'
 
 
@@ -339,28 +344,30 @@ def test_delete_all_books(auth_cookie):
 
 
 def test_validate_cookie():
+    host = 'http://0.0.0.0:7000'
 
     url = '{0}/books'.format(host)
     result = requests.get(url)
-    data = result.json()
-    assert data == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
+    message = result.json()
+    assert message == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
 
     url = '{0}/add_book'.format(host)
     result = requests.post(url)
-    data = result.json()
-    assert data == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
+    message = result.json()
+    assert message == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
 
     url = '{0}/books/<book_id>'.format(host)
     result = requests.get(url)
-    data = result.json()
-    assert data == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
+    message = result.json()
+    assert message == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
 
     url = '{0}/books/<book_id>'.format(host)
     result = requests.delete(url)
-    data = result.json()
-    assert data == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
+    message = result.json()
+    assert message == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
 
-    url = '{0}/delete_books'.format(host)
-    result = requests.delete(url)
-    data = result.json()
-    assert data == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
+    url = '{0}//books/<book_id>'.format(host)
+    result = requests.put(url)
+    message = result.json()
+    assert message == {'data': 'invalid cookie'}, 'wrong data fo invalid cookie'
+
